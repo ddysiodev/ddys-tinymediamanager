@@ -10,7 +10,8 @@ final class DdysJson {
   private int          pos;
 
   private DdysJson(String input) {
-    this.input = input == null ? "" : input;
+    String text = input == null ? "" : input;
+    this.input = text.startsWith("\uFEFF") ? text.substring(1) : text;
   }
 
   static Object parse(String input) {

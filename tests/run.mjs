@@ -25,6 +25,7 @@ test('client handles DDYS HTTP edge cases', async () => {
     'timeout(Duration.ofSeconds(config.timeoutSeconds))',
     'followRedirects(HttpClient.Redirect.NORMAL)',
     'Authorization", "Bearer "',
+    'Invalid DDYS API URL',
     'DDYS API returned HTTP',
     'DDYS API returned empty JSON',
     'DDYS API returned invalid JSON',
@@ -43,9 +44,23 @@ test('mapper supports metadata, artwork, resources, and episodes', async () => {
     'new MediaRating',
     'new Person',
     'resourceSummary',
+    'safeResourceSummary',
     'setEpisodeNumber(MediaEpisodeGroup.DEFAULT_AIRED',
     '"items", "results", "movies", "records", "list"',
     '"resources", "episodes", "playlist", "play", "urls"'
+  ]) {
+    assert.ok(source.includes(fragment), `missing ${fragment}`);
+  }
+});
+
+test('tv episode metadata keeps the selected DDYS resource index', async () => {
+  const source = await readFile('src/main/java/org/ddys/tinymediamanager/DdysTvShowMetadataProvider.java', 'utf8');
+  for (const fragment of [
+    'episodeIndexFrom',
+    'value.indexOf(\'#\')',
+    'Math.max(1, Integer.parseInt',
+    'filtered.get(selected)',
+    'selected + 1'
   ]) {
     assert.ok(source.includes(fragment), `missing ${fragment}`);
   }

@@ -9,7 +9,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -91,7 +90,7 @@ final class DdysMapper {
       boolean grouped = list.stream().anyMatch(item -> !collectArrays(asMap(item)).isEmpty());
       int groupIndex = 1;
       for (Object item : list) {
-        if (grouped && item instanceof Map<?, ?>) {
+        if (grouped && item instanceof Map<?, ?> && !collectArrays(asMap(item)).isEmpty()) {
           Map<String, Object> group = asMap(item);
           String groupName = first(group, "name", "title", "label", "source", "type");
           if (groupName.isBlank()) {
@@ -144,9 +143,11 @@ final class DdysMapper {
     metadata.setId(DdysProviderSupport.PROVIDER_ID, show.slug + "#" + episode);
     metadata.setTitle(resource.name.isBlank() ? show.title + " 第 " + episode + " 集" : resource.name);
     metadata.setEpisodeNumber(MediaEpisodeGroup.DEFAULT_AIRED, season, episode);
-    metadata.setPlot(resourceSummary(List.of(resource), config));
+    metadata.setPlot(safeResourceSummary(List.of(resource), config));
     metadata.addTag("DDYS");
-    metadata.addTag(resource.direct ? "DDYS 直链" : "DDYS 外部资源");
+    if (!resource.url.isBlank()) {
+      metadata.addTag(resource.direct ? "DDYS 直链" : "DDYS 外部资源");
+    }
     return metadata;
   }
 
@@ -182,7 +183,10 @@ final class DdysMapper {
     setDate(metadata, movie.releaseDate);
     String plot = movie.overview;
     if (config.resourceSummary && !resources.isEmpty()) {
-      plot = (plot.isBlank() ? "" : plot + "\n\n") + resourceSummary(resources, config);
+      String summary = safeResourceSummary(resources, config);
+      if (!summary.isBlank()) {
+        plot = (plot.isBlank() ? "" : plot + "\n\n") + summary;
+      }
     }
     metadata.setPlot(plot);
     metadata.setTagline(movie.remarks);
@@ -227,7 +231,7 @@ final class DdysMapper {
     StringBuilder out = new StringBuilder("DDYS 资源");
     int index = 1;
     for (DdysModels.Resource resource : resources) {
-      if (config.directOnly && !resource.direct) {
+      if (resource.url.isBlank() || (config.directOnly && !resource.direct)) {
         continue;
       }
       out.append('\n')
@@ -239,6 +243,11 @@ final class DdysMapper {
           .append(resource.url);
     }
     return out.toString();
+  }
+
+  private static String safeResourceSummary(List<DdysModels.Resource> resources, DdysConfig config) {
+    String summary = resourceSummary(resources, config);
+    return "DDYS 资源".equals(summary) ? "" : summary;
   }
 
   private static DdysModels.Resource resourceFrom(Object raw, String groupName, DdysConfig config) {
@@ -406,7 +415,12 @@ final class DdysMapper {
   private static int parseRuntime(String runtime) {
     Matcher matcher = Pattern.compile("\\d+").matcher(trim(runtime));
     if (matcher.find()) {
-      return Integer.parseInt(matcher.group());
+      try {
+        return Integer.parseInt(matcher.group());
+      }
+      catch (NumberFormatException ignored) {
+        return 0;
+      }
     }
     return 0;
   }

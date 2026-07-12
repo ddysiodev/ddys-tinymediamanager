@@ -52,6 +52,7 @@ public class DdysTvShowMetadataProvider extends DdysProviderSupport implements I
   public MediaMetadata getMetadata(TvShowEpisodeSearchAndScrapeOptions options) throws ScrapeException {
     DdysConfig config = config();
     String slug = DdysConfig.trim(options.getIdAsString(PROVIDER_ID));
+    int episodeIndex = episodeIndexFrom(slug);
     if (slug.contains("#")) {
       slug = slug.substring(0, slug.indexOf('#'));
     }
@@ -68,8 +69,32 @@ public class DdysTvShowMetadataProvider extends DdysProviderSupport implements I
     }
     List<DdysModels.Resource> resources = resources(slug, config);
     if (resources.isEmpty()) {
-      return DdysMapper.toEpisodeMetadata(show, new DdysModels.Resource(), 1, 1, config);
+      return DdysMapper.toEpisodeMetadata(show, new DdysModels.Resource(), 1, episodeIndex, config);
     }
-    return DdysMapper.toEpisodeMetadata(show, resources.get(0), 1, 1, config);
+    List<DdysModels.Resource> filtered = new ArrayList<>();
+    for (DdysModels.Resource resource : resources) {
+      if (!config.directOnly || resource.direct) {
+        filtered.add(resource);
+      }
+    }
+    if (filtered.isEmpty()) {
+      return DdysMapper.toEpisodeMetadata(show, new DdysModels.Resource(), 1, episodeIndex, config);
+    }
+    int selected = Math.min(Math.max(episodeIndex, 1), filtered.size()) - 1;
+    return DdysMapper.toEpisodeMetadata(show, filtered.get(selected), 1, selected + 1, config);
+  }
+
+  private static int episodeIndexFrom(String id) {
+    String value = DdysConfig.trim(id);
+    int marker = value.indexOf('#');
+    if (marker < 0 || marker + 1 >= value.length()) {
+      return 1;
+    }
+    try {
+      return Math.max(1, Integer.parseInt(value.substring(marker + 1)));
+    }
+    catch (NumberFormatException e) {
+      return 1;
+    }
   }
 }

@@ -2,6 +2,7 @@ package org.ddys.tinymediamanager;
 
 import java.net.URL;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -108,6 +109,7 @@ abstract class DdysProviderSupport {
   private MediaProviderInfo createProviderInfo(String subId, String name, String description) {
     URL logo = DdysProviderSupport.class.getResource("/org/ddys/tinymediamanager/ddys-icon.png");
     MediaProviderInfo info = new MediaProviderInfo(PROVIDER_ID, subId, name, description, logo);
+    info.setResourceBundle(ResourceBundle.getBundle("org.ddys.tinymediamanager.messages"));
     DdysConfig.addDefaults(info);
     return info;
   }

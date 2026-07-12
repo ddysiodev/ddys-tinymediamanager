@@ -54,13 +54,13 @@ for (const file of required) {
 
 const pkg = JSON.parse(await read('package.json'));
 assert(pkg.name === 'ddys-tinymediamanager', 'package name mismatch.');
-assert(pkg.version === '0.1.0', 'package version mismatch.');
+assert(pkg.version === '0.1.1', 'package version mismatch.');
 assert(pkg.private === true, 'package must be private.');
 
 const pom = await read('pom.xml');
 for (const fragment of [
   '<artifactId>ddys-tinymediamanager</artifactId>',
-  '<version>0.1.0</version>',
+  '<version>0.1.1</version>',
   '<tinymediamanager.version>[5.0,6.0)</tinymediamanager.version>',
   'https://gitlab.com/api/v4/projects/9945251/packages/maven',
   '<maven.compiler.release>17</maven.compiler.release>'
@@ -86,9 +86,13 @@ for (const fragment of [
   'implements ITvShowSubtitleProvider',
   'HttpClient.newBuilder()',
   'Authorization", "Bearer "',
+  'Invalid DDYS API URL',
   'DDYS API returned invalid JSON',
   'MediaArtwork.getSizeOrder',
   'setEpisodeNumber(MediaEpisodeGroup.DEFAULT_AIRED',
+  'episodeIndexFrom',
+  'safeResourceSummary',
+  'ResourceBundle.getBundle',
   'resourceSummary',
   'directOnly',
   'dataNode',

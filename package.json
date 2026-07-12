@@ -1,6 +1,6 @@
 {
   "name": "ddys-tinymediamanager",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "DDYS API 的 tinyMediaManager 第三方 scraper 插件",
   "type": "module",

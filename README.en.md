@@ -14,8 +14,8 @@ Official tinyMediaManager scraper addon for the DDYS API. It adds DDYS as a movi
 
 ## Installation
 
-1. Download `ddys-tinymediamanager-v0.1.0.zip` from GitHub Releases.
-2. Extract it and place `ddys-tinymediamanager-0.1.0.jar` into the tinyMediaManager `addons` folder.
+1. Download `ddys-tinymediamanager-v0.1.1.zip` from GitHub Releases.
+2. Extract it and place `ddys-tinymediamanager-0.1.1.jar` into the tinyMediaManager `addons` folder.
 3. Restart tinyMediaManager.
 4. Enable `DDYS` in scraper settings and configure API Base/API Key if needed.
 

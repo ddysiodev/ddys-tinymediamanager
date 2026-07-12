@@ -25,11 +25,11 @@ jobs:
           mkdir -p package/ddys-tinymediamanager
           cp target/ddys-tinymediamanager-*.jar package/ddys-tinymediamanager/
           cp README.md README.en.md LICENSE package/ddys-tinymediamanager/
-          (cd package && zip -r ../ddys-tinymediamanager-v0.1.0.zip ddys-tinymediamanager)
-          sha256sum ddys-tinymediamanager-v0.1.0.zip > ddys-tinymediamanager-v0.1.0.zip.sha256
+          (cd package && zip -r ../ddys-tinymediamanager-v0.1.1.zip ddys-tinymediamanager)
+          sha256sum ddys-tinymediamanager-v0.1.1.zip > ddys-tinymediamanager-v0.1.1.zip.sha256
       - uses: actions/upload-artifact@v4
         with:
-          name: ddys-tinymediamanager-v0.1.0
+          name: ddys-tinymediamanager-v0.1.1
           path: |
-            ddys-tinymediamanager-v0.1.0.zip
-            ddys-tinymediamanager-v0.1.0.zip.sha256
+            ddys-tinymediamanager-v0.1.1.zip
+            ddys-tinymediamanager-v0.1.1.zip.sha256

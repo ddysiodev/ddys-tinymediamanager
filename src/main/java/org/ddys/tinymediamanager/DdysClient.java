@@ -60,17 +60,17 @@ final class DdysClient {
   }
 
   private Object getJson(String path, Map<String, String> query) throws ScrapeException {
-    URI uri = URI.create(buildUrl(path, query));
-    HttpRequest.Builder builder = HttpRequest.newBuilder(uri)
-        .timeout(Duration.ofSeconds(config.timeoutSeconds))
-        .header("Accept", "application/json")
-        .header("User-Agent", config.userAgent)
-        .GET();
-    if (!config.apiKey.isBlank()) {
-      builder.header("Authorization", "Bearer " + config.apiKey);
-    }
-
     try {
+      URI uri = URI.create(buildUrl(path, query));
+      HttpRequest.Builder builder = HttpRequest.newBuilder(uri)
+          .timeout(Duration.ofSeconds(config.timeoutSeconds))
+          .header("Accept", "application/json")
+          .header("User-Agent", config.userAgent)
+          .GET();
+      if (!config.apiKey.isBlank()) {
+        builder.header("Authorization", "Bearer " + config.apiKey);
+      }
+
       HttpResponse<String> response = httpClient.send(builder.build(), HttpResponse.BodyHandlers.ofString(StandardCharsets.UTF_8));
       if (response.statusCode() < 200 || response.statusCode() >= 300) {
         throw new ScrapeException("DDYS API returned HTTP " + response.statusCode());
@@ -79,7 +79,12 @@ final class DdysClient {
       if (body.isBlank()) {
         throw new ScrapeException("DDYS API returned empty JSON");
       }
-      return DdysJson.parse(body);
+      try {
+        return DdysJson.parse(body);
+      }
+      catch (IllegalArgumentException e) {
+        throw new ScrapeException("DDYS API returned invalid JSON: " + e.getMessage());
+      }
     }
     catch (IOException e) {
       throw new ScrapeException(e.getMessage());
@@ -89,7 +94,7 @@ final class DdysClient {
       throw new ScrapeException("DDYS API request interrupted");
     }
     catch (IllegalArgumentException e) {
-      throw new ScrapeException("DDYS API returned invalid JSON: " + e.getMessage());
+      throw new ScrapeException("Invalid DDYS API URL: " + e.getMessage());
     }
   }
 

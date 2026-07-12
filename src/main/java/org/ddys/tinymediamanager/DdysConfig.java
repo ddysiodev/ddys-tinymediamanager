@@ -27,7 +27,7 @@ final class DdysConfig {
     this.apiBase = trim(apiBase).replaceAll("/+$", "");
     this.siteBase = trim(siteBase).replaceAll("/+$", "");
     this.apiKey = trim(apiKey);
-    this.userAgent = trim(userAgent).isBlank() ? "ddys-tinymediamanager/0.1.0" : trim(userAgent);
+    this.userAgent = trim(userAgent).isBlank() ? "ddys-tinymediamanager/0.1.1" : trim(userAgent);
     this.pageSize = clamp(pageSize, 1, 100);
     this.timeoutSeconds = clamp(timeoutSeconds, 3, 120);
     this.directOnly = directOnly;
@@ -44,7 +44,7 @@ final class DdysConfig {
     info.getConfig().addBoolean(DIRECT_ONLY, "仅写入 m3u8/mp4/mkv 等直链资源", false);
     info.getConfig().addBoolean(RESOURCE_SUMMARY, "在简介里追加 DDYS 资源摘要", true);
     info.getConfig().addBoolean(INCLUDE_ARTWORK, "写入海报和背景图", true);
-    info.getConfig().addText(USER_AGENT, "HTTP User-Agent", "ddys-tinymediamanager/0.1.0");
+    info.getConfig().addText(USER_AGENT, "HTTP User-Agent", "ddys-tinymediamanager/0.1.1");
     info.getConfig().load();
   }
 
@@ -53,7 +53,7 @@ final class DdysConfig {
         value(info, API_BASE, "https://ddys.io/api/v1"),
         value(info, SITE_BASE, "https://ddys.io"),
         info.getUserApiKey(),
-        value(info, USER_AGENT, "ddys-tinymediamanager/0.1.0"),
+        value(info, USER_AGENT, "ddys-tinymediamanager/0.1.1"),
         integer(info, PAGE_SIZE, 20),
         integer(info, TIMEOUT_SECONDS, 15),
         info.getConfig().getValueAsBool(DIRECT_ONLY, false),

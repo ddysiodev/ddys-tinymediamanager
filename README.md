@@ -14,8 +14,8 @@
 
 ## 安装
 
-1. 从 GitHub Release 下载 `ddys-tinymediamanager-v0.1.0.zip`。
-2. 解压后把 `ddys-tinymediamanager-0.1.0.jar` 放入 tinyMediaManager 安装目录的 `addons` 文件夹。
+1. 从 GitHub Release 下载 `ddys-tinymediamanager-v0.1.1.zip`。
+2. 解压后把 `ddys-tinymediamanager-0.1.1.jar` 放入 tinyMediaManager 安装目录的 `addons` 文件夹。
 3. 重启 tinyMediaManager。
 4. 在 scraper 设置里启用 `DDYS`，按需填写 API Base 和 API Key。
 
