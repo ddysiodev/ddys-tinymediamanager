@@ -185,7 +185,6 @@ final class DdysMapper {
       plot = (plot.isBlank() ? "" : plot + "\n\n") + resourceSummary(resources, config);
     }
     metadata.setPlot(plot);
-    metadata.setOutline(movie.overview);
     metadata.setTagline(movie.remarks);
     metadata.setRuntime(parseRuntime(movie.runtime));
     if (movie.rating > 0) {
