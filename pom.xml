@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <groupId>org.ddys</groupId>
+  <artifactId>ddys-tinymediamanager</artifactId>
+  <version>0.1.0</version>
+  <packaging>jar</packaging>
+
+  <name>ddys-tinymediamanager</name>
+  <description>DDYS API scraper addon for tinyMediaManager</description>
+  <url>https://github.com/ddysiodev/ddys-tinymediamanager</url>
+
+  <repositories>
+    <repository>
+      <id>tinymediamanager-gitlab</id>
+      <url>https://gitlab.com/api/v4/projects/9945251/packages/maven</url>
+    </repository>
+  </repositories>
+
+  <properties>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    <maven.compiler.release>17</maven.compiler.release>
+    <tinymediamanager.version>[5.0,6.0)</tinymediamanager.version>
+  </properties>
+
+  <dependencies>
+    <dependency>
+      <groupId>org.tinymediamanager</groupId>
+      <artifactId>tinyMediaManager</artifactId>
+      <version>${tinymediamanager.version}</version>
+      <scope>provided</scope>
+    </dependency>
+  </dependencies>
+
+  <build>
+    <finalName>ddys-tinymediamanager-${project.version}</finalName>
+    <plugins>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-compiler-plugin</artifactId>
+        <version>3.13.0</version>
+        <configuration>
+          <release>${maven.compiler.release}</release>
+          <encoding>${project.build.sourceEncoding}</encoding>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jar-plugin</artifactId>
+        <version>3.4.2</version>
+        <configuration>
+          <archive>
+            <manifestEntries>
+              <Implementation-Title>${project.name}</Implementation-Title>
+              <Implementation-Version>${project.version}</Implementation-Version>
+              <Implementation-Vendor>DDYS</Implementation-Vendor>
+            </manifestEntries>
+          </archive>
+        </configuration>
+      </plugin>
+    </plugins>
+  </build>
+</project>

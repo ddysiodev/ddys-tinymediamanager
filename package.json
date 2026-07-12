@@ -1,0 +1,23 @@
+{
+  "name": "ddys-tinymediamanager",
+  "version": "0.1.0",
+  "private": true,
+  "description": "DDYS API 的 tinyMediaManager 第三方 scraper 插件",
+  "type": "module",
+  "scripts": {
+    "check": "node tools/check.mjs",
+    "test": "node tests/run.mjs",
+    "package": "powershell -NoProfile -ExecutionPolicy Bypass -File tools/build-package.ps1"
+  },
+  "keywords": [
+    "ddys",
+    "tinymediamanager",
+    "scraper",
+    "nfo",
+    "metadata"
+  ],
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  }
+}

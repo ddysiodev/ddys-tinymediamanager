@@ -1,0 +1,35 @@
+name: build
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+          cache: maven
+      - run: node tools/check.mjs
+      - run: node tests/run.mjs
+      - run: mvn -B -ntp package
+      - name: Build release zip
+        run: |
+          mkdir -p package/ddys-tinymediamanager
+          cp target/ddys-tinymediamanager-*.jar package/ddys-tinymediamanager/
+          cp README.md README.en.md LICENSE package/ddys-tinymediamanager/
+          (cd package && zip -r ../ddys-tinymediamanager-v0.1.0.zip ddys-tinymediamanager)
+          sha256sum ddys-tinymediamanager-v0.1.0.zip > ddys-tinymediamanager-v0.1.0.zip.sha256
+      - uses: actions/upload-artifact@v4
+        with:
+          name: ddys-tinymediamanager-v0.1.0
+          path: |
+            ddys-tinymediamanager-v0.1.0.zip
+            ddys-tinymediamanager-v0.1.0.zip.sha256

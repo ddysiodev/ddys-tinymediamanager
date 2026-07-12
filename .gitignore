@@ -1,0 +1,10 @@
+target/
+package/
+*.log
+*.tmp
+*.cache
+*.zip
+*.tgz
+.env
+.env.*
+!.env.example
